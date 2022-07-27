@@ -1,0 +1,29 @@
+name: "enterprise-audit-action"
+description: "Use this action to audit your GitHub repos, users, teams, and/or organizations"
+author: "imranalley"
+inputs:
+  token:
+    description: Personal Access Token for GitHub
+    required: true
+  owner:
+    description: Repo Owner (enter user or org name)
+    required: false
+  repository:
+    description: Repo name
+    required: false
+  organization:
+    description: Org name to be audited
+    required: false
+  team:
+    description: GitHub Team name to be audited
+    required: false
+  audit:
+    description: Audit Use-case to be leveraged
+    required: true
+  user:
+    description: username to be audited
+    required: false
+
+runs:
+  using: docker
+  image: Dockerfile
