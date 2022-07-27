@@ -1,0 +1,30 @@
+name: Enterprise Audit Action
+on:
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Use Enterprise Audit Action
+      - name: Run a one-line script
+        uses: imranalley/enterprise-audit-action@main
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          #organization:
+          #repository:
+          #owner:
+          #team:
+          user: imranalley
+          audit: user
+          instance: https://github.com/api/graphql
+
+      - name: Publish CSV Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: ghe-acl
+          path: ghe-acl*.csv
