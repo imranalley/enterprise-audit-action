@@ -188,16 +188,16 @@ csv_data = []
 ####################################################################
 # For use case
 if (useCase == "team"):
-    csv_data = situation_audit_team(gh_organization, gh_team)
+    csv_data = situation_audit_team(gh_organization, gh_team, gh_instance)
     csv_header = ['org', 'team', 'name', 'login', 'role']
 elif (useCase == "org"):
-    csv_data = situation_audit_org(gh_organization, gh_repo_owner, gh_repo_name)
+    csv_data = situation_audit_org(gh_organization, gh_repo_owner, gh_repo_name, gh_instance)
     csv_header = ['org_name', 'repository', 'collaborators']
 elif (useCase == "repo"):
-    csv_data = situation_audit_repo(gh_repo_owner, gh_repo_name)
+    csv_data = situation_audit_repo(gh_repo_owner, gh_repo_name, gh_instance)
     csv_header = ['owner_name', 'repository', 'user_name', 'user_login', 'user_email', 'permission']
 elif(useCase == "user"):
-    csv_data = situation_audit_user(gh_user)
+    csv_data = situation_audit_user(gh_user, gh_instance)
     csv_header = ['user', 'repository', 'permission']
  
 ####################################################################
