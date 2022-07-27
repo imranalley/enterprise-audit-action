@@ -15,6 +15,7 @@ gh_organization = os.environ["INPUT_ORGANIZATION"]
 gh_team = os.environ["INPUT_TEAM"]
 useCase = os.environ["INPUT_AUDIT"]
 gh_user = os.environ["INPUT_USER"]
+gh_instance = os.environ["INPUT_INSTANCE"]
  
 # GH Authentication
 headers = {"Authorization": "Bearer {0}".format(gh_token) }
@@ -23,12 +24,12 @@ headers = {"Authorization": "Bearer {0}".format(gh_token) }
 # Use Case 1 (Audit Org) - List all repos and permissions per Organization #
 #################################################################
  
-def situation_audit_org(local_gh_organization, local_gh_repo_owner, local_gh_repo_name):
+def situation_audit_org(local_gh_organization, local_gh_instance, local_gh_repo_owner, local_gh_repo_name):
     local_csv_data = []
     try:
         # Request
         tmp_gh_query = queries.auditOrgQuery.replace("#ORG#", local_gh_organization)
-        request = requests.post("https://github.com/api/graphql", json={'query': tmp_gh_query}, headers=headers)
+        request = requests.post(local_gh_instance, json={'query': tmp_gh_query}, headers=headers)
         response = request.json()["data"]
         print ("response:", response)
         collaborators = response["organization"]["repositories"]["nodes"]
@@ -45,7 +46,7 @@ def situation_audit_org(local_gh_organization, local_gh_repo_owner, local_gh_rep
             print("loop start")
             tmp_gh_query = queries.auditOrgQueryPagination.replace("#ORG#", local_gh_organization).replace("#PAGE#", pageEnd)
             print(tmp_gh_query)
-            request = requests.post("https://github.com/api/graphql", json={'query': tmp_gh_query}, headers=headers)
+            request = requests.post(local_gh_instance, json={'query': tmp_gh_query}, headers=headers)
             response = request.json()["data"]
             print ("response:", response)
             collaborators = response["organization"]["repositories"]["nodes"]
@@ -68,12 +69,12 @@ def situation_audit_org(local_gh_organization, local_gh_repo_owner, local_gh_rep
 # Use Case 2 (Audit Team) - List all repos and permissions per Team          #
 #################################################################
  
-def situation_audit_team(local_gh_organization, local_gh_team):
+def situation_audit_team(local_gh_organization, local_gh_instance, local_gh_team):
     local_csv_data = []
     try:
         # Request
         tmp_gh_query = queries.auditTeamQuery.replace("#ORG#", local_gh_organization).replace("#TEAM#", local_gh_team)
-        request = requests.post("https://github.com/api/graphql", json={'query': tmp_gh_query}, headers=headers)
+        request = requests.post(local_gh_instance, json={'query': tmp_gh_query}, headers=headers)
         response = request.json()["data"]
         members = response["organization"]["team"]["members"]["nodes"]
         permissions = response["organization"]["team"]["members"]["edges"]
@@ -86,7 +87,7 @@ def situation_audit_team(local_gh_organization, local_gh_team):
        
         while (nextPage == True):
             tmp_gh_query = queries.auditTeamQueryPagination.replace("#ORG#", local_gh_organization).replace("#TEAM#", local_gh_team).replace("#PAGE#", pageEnd)
-            request = requests.post("https://github.com/api/graphql", json={'query': tmp_gh_query}, headers=headers)
+            request = requests.post(local_gh_instance, json={'query': tmp_gh_query}, headers=headers)
             response = request.json()["data"]
             members = response["organization"]["team"]["members"]["nodes"]
             permissions = response["organization"]["team"]["members"]["edges"]
@@ -106,12 +107,12 @@ def situation_audit_team(local_gh_organization, local_gh_team):
 # Use Case 3 (Audit User) - List all repos and permissions of user
 #################################################################
  
-def situation_audit_user(local_gh_user):
+def situation_audit_user(local_gh_user, local_gh_instance):
     local_csv_data = []
     try:
         # Request
         tmp_gh_query = queries.auditUserQuery.replace("#USER#", local_gh_user)
-        request = requests.post("https://github.com/api/graphql", json={'query': tmp_gh_query}, headers=headers)
+        request = requests.post(local_gh_instance, json={'query': tmp_gh_query}, headers=headers)
         response = request.json()["data"]
         nextPage = response["user"]["repositories"]["pageInfo"]["hasNextPage"]
         pageEnd = response["user"]["repositories"]["pageInfo"]["endCursor"]
@@ -124,7 +125,7 @@ def situation_audit_user(local_gh_user):
        
         while(nextPage == True):
             tmp_gh_query = queries.auditUserQueryPagination.replace("#USER#", local_gh_user).replace("#PAGE#", pageEnd)
-            request = requests.post("https://github.com/api/graphql", json={'query': tmp_gh_query}, headers=headers)
+            request = requests.post(local_gh_instance, json={'query': tmp_gh_query}, headers=headers)
             response = request.json()["data"]
             nextPage = response["user"]["repositories"]["pageInfo"]["hasNextPage"]
             pageEnd = response["user"]["repositories"]["pageInfo"]["endCursor"]
@@ -143,12 +144,12 @@ def situation_audit_user(local_gh_user):
 # Situation 4 (Audit Repo)- List user and permissions per list of repositories #
 ####################################################################
  
-def situation_audit_repo(local_gh_repo_owner, local_gh_repo_name):
+def situation_audit_repo(local_gh_repo_owner, local_gh_repo_name, local_gh_instance):
     local_csv_data = []
     try:
         # Request
         tmp_gh_query = queries.auditRepoQuery.replace("#OWNER#", local_gh_repo_owner).replace("#REPOSITORY#", str(local_gh_repo_name))
-        request = requests.post("https://github.com/api/graphql", json={'query': tmp_gh_query}, headers=headers)
+        request = requests.post(local_gh_instance, json={'query': tmp_gh_query}, headers=headers)
         response = request.json()["data"]
         collaborators = response["repository"]["collaborators"]["edges"]
         nextPage = response["repository"]["collaborators"]["pageInfo"]["hasNextPage"]
@@ -161,7 +162,7 @@ def situation_audit_repo(local_gh_repo_owner, local_gh_repo_name):
         while (nextPage == True):
             # Request
             tmp_gh_query = queries.auditRepoQueryPagination.replace("#OWNER#", local_gh_repo_owner).replace("#REPOSITORY#", str(local_gh_repo_name)).replace("#PAGE#", pageEnd)
-            request = requests.post("https://github.com/api/graphql", json={'query': tmp_gh_query}, headers=headers)
+            request = requests.post(local_gh_instance, json={'query': tmp_gh_query}, headers=headers)
             response = request.json()["data"]
             collaborators = response["repository"]["collaborators"]["edges"]
             nextPage = response["repository"]["collaborators"]["pageInfo"]["hasNextPage"]

@@ -23,6 +23,10 @@ inputs:
   user:
     description: username to be audited
     required: false
+  instance:
+    description: enter the link to your github instance + point to graphql api (for GHE users)
+    required: false
+    default: https://github.com/api/graphql
 
 runs:
   using: docker
