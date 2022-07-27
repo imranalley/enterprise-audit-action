@@ -21,7 +21,7 @@ jobs:
           #team:
           user: imranalley
           audit: user
-          #instance:
+          instance: https://github.com/api/graphql
 
       - name: Publish CSV Report
         uses: actions/upload-artifact@v2
