@@ -12,7 +12,7 @@ jobs:
 
       # Use Enterprise Audit Action
       - name: Run a one-line script
-        uses: imranalley/enterprise-audit-action@master
+        uses: imranalley/enterprise-audit-action@main
         with:
           token: ${{ secrets.GH_TOKEN }}
           #organization:
