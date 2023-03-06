@@ -15,12 +15,12 @@ jobs:
         uses: imranalley/enterprise-audit-action@main
         with:
           token: ${{ secrets.GH_TOKEN }}
-          #organization:
-          #repository:
-          #owner:
+          organization: ContainerSolutions
+          repository: https://github.com/ContainerSolutions/externalsecret-operator
+          owner: ContainerSolutions
           #team:
-          user: imranalley
-          audit: user
+          # user: imranalley
+          audit: repo
           instance: https://github.com/api/graphql
 
       - name: Publish CSV Report
