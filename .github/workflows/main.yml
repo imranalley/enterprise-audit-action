@@ -19,8 +19,8 @@ jobs:
           repository: https://github.com/ContainerSolutions/helm-monitor
           owner: ContainerSolutions
           #team:
-          # user: imranalley
-          audit: repo
+          user: imranalley
+          audit: user
           instance: https://github.com/api/graphql
 
       - name: Publish CSV Report
