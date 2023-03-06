@@ -16,7 +16,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           organization: ContainerSolutions
-          repository: https://github.com/ContainerSolutions/externalsecret-operator
+          repository: https://github.com/ContainerSolutions/helm-monitor
           owner: ContainerSolutions
           #team:
           # user: imranalley
