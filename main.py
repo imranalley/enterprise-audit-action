@@ -18,7 +18,7 @@ gh_user = os.environ["INPUT_USER"]
 gh_instance = os.environ["INPUT_INSTANCE"]
  
 # GH Authentication
-headers = {"Authorization": "Bearer {0}".format(gh_token) }
+headers = {"Authorization": "Bearer {0}".format(gh_token), "X-GitHub-Api-Version": "2022-11-28" } 
  
 #################################################################
 # Use Case 1 (Audit Org) - List all repos and permissions per Organization #
